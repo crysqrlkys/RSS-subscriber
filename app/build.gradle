@@ -21,7 +21,7 @@ def VersionCode() {
 }
 
 def getSigningPasswords() {
-    def lines = file("${System.properties['user.home']}${File.separator}.android${File.separator}ReleasePasswords.txt").readLines()
+    def lines = file("${System.properties['user.home']}${File.separator}.android${File.separator}ReleasePasswords").readLines()
     return lines
 }
 
@@ -57,10 +57,10 @@ android {
     }
     flavorDimensions "version"
     productFlavors {
-        mainVer {
+        mainVersion {
             dimension "version"
         }
-        dev {
+        developmentVersion {
             dimension "version"
             manifestPlaceholders = [orientation: "unspecified"]
             versionNameSuffix "-dev"
