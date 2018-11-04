@@ -1,19 +1,69 @@
 apply plugin: 'com.android.application'
 
+
+def gitCommand() {
+    def gitResult = "git describe --tags".execute().text.split("-")
+    def regexResult = gitResult[0].findAll("(\\d+)")
+    def versionMajor = regexResult[0].toInteger()
+    def versionMinor = regexResult[1].toInteger()
+    def versionPatch = gitResult[1].toInteger()
+    return [versionMajor, versionMinor, versionPatch]
+}
+
+def VersionName() {
+    def ver = gitCommand()
+    return "${ver[0]}.${ver[1]}.${ver[2]}"
+}
+
+def VersionCode() {
+    def ver = gitCommand()
+    return 1000 * ver[0] + 100 * ver[1] + 10 * ver[2]
+}
+
+def getSigningPasswords() {
+    def lines = file("${System.properties['user.home']}${File.separator}.android${File.separator}ReleasePasswords").readLines()
+    return lines
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.whyko.labproject"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode VersionCode()
+        versionName VersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [orientation: "portrait"]
+    }
+    signingConfigs {
+        release {
+            storeFile file("${System.properties['user.home']}${File.separator}.android${File.separator}AndroidRelease.jks")
+            storePassword getSigningPasswords()[0]
+            keyAlias "MyKey"
+            keyPassword getSigningPasswords()[1]
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    outputFileName = "${applicationId}-${variant.versionName}.apk"
+                }
+            }
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        mainVersion {
+            dimension "version"
+        }
+        developmentVersion {
+            dimension "version"
+            manifestPlaceholders = [orientation: "unspecified"]
+            versionNameSuffix "-dev"
         }
     }
 }
