@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">labproject</string>
+    <string name="app_name">App</string>
+    <string name="version_lable">Version:</string>
+    <string name="imei_lable">IMEI:</string>
+    <string name="to_app_settings">App settings</string>
+    <string name="message_to_user_imei">Permission for IMEI</string>
+    <string name="imei_dialog_title">Grant permission</string>
+    <string name="imei_dialog_message">Permisson for IMEI</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>
