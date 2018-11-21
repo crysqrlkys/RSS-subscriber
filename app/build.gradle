@@ -1,27 +1,34 @@
 apply plugin: 'com.android.application'
 
 
-def gitCommand() {
-    def gitResult = "git describe --tags".execute().text.split("-")
-    def regexResult = gitResult[0].findAll("(\\d+)")
-    def versionMajor = regexResult[0].toInteger()
-    def versionMinor = regexResult[1].toInteger()
-    def versionPatch = gitResult[1].toInteger()
-    return [versionMajor, versionMinor, versionPatch]
+static gitCommand() {
+    def version = [0, 0, 0]
+    try {
+        def gitResult = "git describe --tags".execute().text.split("-")
+        def regexResult = gitResult[0].findAll("(\\d+)")
+        def versionMajor = regexResult[0].toInteger()
+        def versionMinor = regexResult[1].toInteger()
+        def versionPatch = gitResult[1].toInteger()
+        version.addAll([versionMajor, versionMinor, versionPatch])
+    }
+    catch(Exception ex){
+        print(ex.message)
+    }
+    return version
 }
 
-def VersionName() {
+static VersionName() {
     def ver = gitCommand()
     return "${ver[0]}.${ver[1]}.${ver[2]}"
 }
 
-def VersionCode() {
+static VersionCode() {
     def ver = gitCommand()
     return 1000 * ver[0] + 100 * ver[1] + 10 * ver[2]
 }
 
 def getSigningPasswords() {
-    def lines = file("${System.properties['user.home']}${File.separator}keystores${File.separator}ReleasePasswords").readLines()
+    def lines = file("${System.properties['user.home']}${File.separator}.android${File.separator}ReleasePasswords.txt").readLines()
     return lines
 }
 
@@ -37,10 +44,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("${System.properties['user.home']}${File.separator}keystores${File.separator}android.jks")
-            storePassword getSigningPasswords()[0]
-            keyAlias "MyKey"
-            keyPassword getSigningPasswords()[1]
+            storeFile file('/home/whyko/.android/crysqrlRelease.jks')
+            storePassword '7554347x'
+            keyAlias "crysqrl"
+            keyPassword '7554347x'
         }
     }
     buildTypes {
@@ -69,7 +76,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0'
