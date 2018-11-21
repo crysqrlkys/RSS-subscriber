@@ -20,9 +20,9 @@ import android.widget.TextView;
 import static com.example.whyko.labproject.Constants.REQUEST_IMEI;
 
 public class MainActivity extends AppCompatActivity {
-    TextView ver;
-    TextView IMEI;
-    Button btn;
+    private TextView ver;
+    private TextView IMEI;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener getPermission = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
@@ -47,20 +46,27 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(getPermission);
 
         getVersionInfo();
-        getIMEI();
+        if (savedInstanceState != null){
+            IMEI.setText(savedInstanceState.getCharSequence("IMEI"));
+        }
+        else {
+            getIMEI();
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outstate) {
+        outstate.putCharSequence("IMEI", IMEI.getText());
+        super.onSaveInstanceState(outstate);
+    }
 
     private void getVersionInfo() {
-        String versionName = "";
-
-        versionName = BuildConfig.VERSION_NAME;
-
+        String versionName = BuildConfig.VERSION_NAME;
         ver.setText(versionName);
     }
 
     private void getIMEI() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
