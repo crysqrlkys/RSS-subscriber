@@ -2,19 +2,20 @@ apply plugin: 'com.android.application'
 
 
 static gitCommand() {
-    def version = [0, 0, 0]
+    def versionMajor = 0
+    def versionMinor = 0
+    def versionPatch = 0
     try {
         def gitResult = "git describe --tags".execute().text.split("-")
         def regexResult = gitResult[0].findAll("(\\d+)")
-        def versionMajor = regexResult[0].toInteger()
-        def versionMinor = regexResult[1].toInteger()
-        def versionPatch = gitResult[1].toInteger()
-        version.addAll([versionMajor, versionMinor, versionPatch])
+        versionMajor = regexResult[0].toInteger()
+        versionMinor = regexResult[1].toInteger()
+        versionPatch = gitResult[1].toInteger()
     }
     catch(Exception ex){
         print(ex.message)
     }
-    return version
+    return [versionMajor, versionMinor, versionPatch]
 }
 
 static VersionName() {
@@ -44,10 +45,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('/home/whyko/.android/crysqrlRelease.jks')
-            storePassword '7554347x'
+            storeFile file("${System.properties['user.home']}${File.separator}.android${File.separator}crysqrlRelease.jks")
+            storePassword getSigningPasswords()[0]
             keyAlias "crysqrl"
-            keyPassword '7554347x'
+            keyPassword getSigningPasswords()[1]
         }
     }
     buildTypes {
