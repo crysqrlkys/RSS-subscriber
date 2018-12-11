@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView ver;
     private TextView IMEI;
     private Button btn;
+    private CharSequence imeiText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         getVersionInfo();
         if (savedInstanceState != null){
-            IMEI.setText(savedInstanceState.getCharSequence("IMEI"));
+            imeiText = savedInstanceState.getCharSequence("IMEI");
+            if (imeiText != null) {
+                IMEI.setText(imeiText);
+            }
         }
         else {
             getIMEI();
