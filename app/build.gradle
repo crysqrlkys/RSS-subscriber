@@ -6,7 +6,7 @@ static gitCommand() {
     def versionMinor = 0
     def versionPatch = 0
     try {
-        def gitResult = "git describe --tags".execute().text.split("-")
+        def gitResult = "git describe --tags --long".execute().text.split("-")
         def regexResult = gitResult[0].findAll("(\\d+)")
         versionMajor = regexResult[0].toInteger()
         versionMinor = regexResult[1].toInteger()
@@ -25,7 +25,7 @@ static VersionName() {
 
 static VersionCode() {
     def ver = gitCommand()
-    return 1000 * ver[0] + 100 * ver[1] + 10 * ver[2]
+    return 1000 * ver[0] + 100 * ver[1] + ver[2]
 }
 
 def getSigningPasswords() {
