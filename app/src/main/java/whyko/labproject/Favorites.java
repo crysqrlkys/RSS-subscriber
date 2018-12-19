@@ -1,4 +1,4 @@
-package com.example.whyko.labproject;
+package whyko.labproject;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Likes extends Fragment {
-    public Likes() {
-        // Required empty public constructor
+import com.example.whyko.labproject.R;
+
+
+public class Favorites extends Fragment {
+    public Favorites() {
+
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +27,7 @@ public class Likes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_likes, container, false);
+        return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     @Override

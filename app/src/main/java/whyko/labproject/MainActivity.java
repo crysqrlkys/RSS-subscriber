@@ -1,5 +1,7 @@
-package com.example.whyko.labproject;
+package whyko.labproject;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,13 +10,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.example.whyko.labproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import static android.Manifest.*;
 
@@ -81,7 +83,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.about_menu_item:
                 navController.navigate(R.id.about);
                 break;
+            case R.id.logout_menu_item:
+                finish();
+                break;
+            case R.id.setting_menu_item:
+                navigateToSettings();
+                break;
         }
         return true;
+    }
+
+    private void navigateToSettings(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }

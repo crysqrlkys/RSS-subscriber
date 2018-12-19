@@ -7,27 +7,32 @@
 
     <fragment
         android:id="@+id/profile"
-        android:name="com.example.whyko.labproject.Profile"
+        android:name="whyko.labproject.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/likes"
-        android:name="com.example.whyko.labproject.Likes"
+        android:name="whyko.labproject.Likes"
         android:label="fragment_likes"
         tools:layout="@layout/fragment_likes" />
     <fragment
         android:id="@+id/about"
-        android:name="com.example.whyko.labproject.About"
+        android:name="whyko.labproject.About"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/rssReader"
-        android:name="com.example.whyko.labproject.RssReader"
+        android:name="whyko.labproject.RssReader"
         android:label="fragment_rss_reader"
         tools:layout="@layout/fragment_rss_reader" />
     <fragment
         android:id="@+id/favorites"
-        android:name="com.example.whyko.labproject.Favorites"
+        android:name="whyko.labproject.Favorites"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/editProfile"
+        android:name="whyko.labproject.EditProfile"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>
