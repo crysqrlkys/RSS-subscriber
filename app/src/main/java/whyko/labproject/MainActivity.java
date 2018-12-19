@@ -10,17 +10,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.whyko.labproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static android.Manifest.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private int currentFragmentId = R.id.profile;
@@ -68,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        KeyboardVisibilityEvent.setEventListener(
+                this,
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if(isOpen)
+                            bottomNavigationView.setVisibility(View.GONE);
+                        else
+                            bottomNavigationView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     @Override
