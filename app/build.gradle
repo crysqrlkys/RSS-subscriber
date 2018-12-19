@@ -12,7 +12,7 @@ static gitCommand() {
         versionMinor = regexResult[1].toInteger()
         versionPatch = gitResult[1].toInteger()
     }
-    catch(Exception ex){
+    catch (Exception ex) {
         print(ex.message)
     }
     return [versionMajor, versionMinor, versionPatch]
@@ -77,11 +77,21 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation 'com.github.esafirm.android-image-picker:imagepicker:1.13.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation "androidx.fragment:fragment:1.1.0-alpha02"
+    implementation 'androidx.preference:preference:1.1.0-alpha01'
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
+    implementation "android.arch.navigation:navigation-fragment:1.0.0-alpha07"
+    implementation "android.arch.navigation:navigation-ui:1.0.0-alpha07"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
-    implementation 'com.google.android.material:material:1.1.0-alpha01'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

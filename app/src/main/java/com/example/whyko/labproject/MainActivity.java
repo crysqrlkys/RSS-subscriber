@@ -1,121 +1,87 @@
 package com.example.whyko.labproject;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import static com.example.whyko.labproject.Constants.REQUEST_IMEI;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+
+import static android.Manifest.*;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView ver;
-    private TextView IMEI;
-    private Button btn;
-    private CharSequence imeiText;
+    private NavController navController;
+    private BottomNavigationView bottomNavigationView;
+    private int currentFragmentId = R.id.profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
 
-        ver = (TextView) findViewById(R.id.version_textview);
-        IMEI = (TextView) findViewById(R.id.imei_textview);
-        btn = (Button) findViewById(R.id.get_permission_button);
+        Toolbar mainToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolbar);
 
-        View.OnClickListener getPermission = new View.OnClickListener() {
+        navController = Navigation.findNavController(this,R.id.main_content);
+        bottomNavigationView = findViewById(R.id.bottom_main_navigation);
+        BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.profile_item:
+                        if(currentFragmentId != R.id.profile){
+                            navController.navigate(R.id.profile);
+                            currentFragmentId = R.id.profile;
+                        }
+                        return true;
+                    case R.id.rss_item:
+                        if(currentFragmentId != R.id.rssReader){
+                            navController.navigate(R.id.rssReader);
+                            currentFragmentId = R.id.rssReader;
+                        }
+                        return true;
+                    case R.id.favorites_item:
+                        if(currentFragmentId != R.id.favorites_item){
+                            navController.navigate(R.id.favorites);
+                            currentFragmentId = R.id.favorites;
+                        }
+                        return true;
+                    case R.id.likes_item:
+                        if(currentFragmentId != R.id.likes){
+                            navController.navigate(R.id.likes);
+                            currentFragmentId = R.id.likes;
+                        }
+                        return true;
+                }
+                return false;
             }
         };
-        btn.setOnClickListener(getPermission);
-
-        getVersionInfo();
-        if (savedInstanceState != null){
-            imeiText = savedInstanceState.getCharSequence("IMEI");
-            if (imeiText != null) {
-                IMEI.setText(imeiText);
-            }
-        }
-        else {
-            getIMEI();
-        }
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outstate) {
-        outstate.putCharSequence("IMEI", IMEI.getText());
-        super.onSaveInstanceState(outstate);
-    }
-
-    private void getVersionInfo() {
-        String versionName = BuildConfig.VERSION_NAME;
-        ver.setText(versionName);
-    }
-
-    private void getIMEI() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_PHONE_STATE)) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.imei_dialog_title)
-                        .setMessage(R.string.imei_dialog_message)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                requestPermission();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .create()
-                        .show();
-            } else {
-                requestPermission();
-            }
-
-        } else {
-            String IMEINumber;
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            IMEINumber = telephonyManager.getDeviceId();
-            IMEI.setText(IMEINumber);
-        }
-    }
-
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_PHONE_STATE},
-                REQUEST_IMEI);
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.appbar_menu, menu);
+        return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_IMEI: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getIMEI();
-                }
-            }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about_menu_item:
+                navController.navigate(R.id.about);
+                break;
         }
+        return true;
     }
-
 }
