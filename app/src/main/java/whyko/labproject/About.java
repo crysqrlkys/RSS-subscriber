@@ -1,4 +1,4 @@
-package com.example.whyko.labproject;
+package whyko.labproject;
 
 import android.Manifest;
 import android.content.Context;
@@ -24,18 +24,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.whyko.labproject.BuildConfig;
+import com.example.whyko.labproject.R;
+
 
 public class About extends Fragment {
 
-    //region Variables
-
     private TextView versionTextView;
     private TextView IMEITextView;
-    private Button settingsButton;
-
-    //endregion
-
-    //region Android Lifecycle
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -43,21 +39,6 @@ public class About extends Fragment {
         Log.d("Akali", "onActivityCreated: " + getView());
         versionTextView = getView().findViewById(R.id.version_textview);
         IMEITextView = getView().findViewById(R.id.imei_textview);
-        settingsButton = getView().findViewById(R.id.get_permission_button);
-
-        View.OnClickListener getPermission = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
-            }
-        };
-
-        settingsButton.setOnClickListener(getPermission);
 
         setVersionTextView();
         if (savedInstanceState != null) {
@@ -79,10 +60,6 @@ public class About extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    //endregion
-
-    //region Private Methods
-
     private void setVersionTextView() {
         String versionName = BuildConfig.VERSION_NAME;
 
@@ -99,11 +76,7 @@ public class About extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.imei_dialog_title)
                         .setMessage(R.string.imei_dialog_message)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                requestPermission();
-                            }
-                        })
+                        .setPositiveButton(R.string.ok, (dialog, id) -> requestPermission())
                         .setNegativeButton(R.string.cancel, null)
                         .create()
                         .show();
@@ -124,6 +97,4 @@ public class About extends Fragment {
                 new String[]{Manifest.permission.READ_PHONE_STATE},
                 Constants.REQUEST_IMEI);
     }
-
-    //endregion
 }

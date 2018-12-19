@@ -1,4 +1,4 @@
-package com.example.whyko.labproject;
+package whyko.labproject;
 
 public final class Constants {
     public static final byte REQUEST_IMEI = 1;

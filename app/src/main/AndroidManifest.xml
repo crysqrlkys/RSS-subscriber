@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="whyko.labproject.MainActivity"
             android:screenOrientation="${orientation}">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AboutActivity" />
     </application>
 
 </manifest>

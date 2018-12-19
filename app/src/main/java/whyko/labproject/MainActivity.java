@@ -1,5 +1,7 @@
-package com.example.whyko.labproject;
+package whyko.labproject;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,17 +10,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.whyko.labproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import static android.Manifest.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private int currentFragmentId = R.id.profile;
@@ -66,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        KeyboardVisibilityEvent.setEventListener(
+                this,
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if(isOpen)
+                            bottomNavigationView.setVisibility(View.GONE);
+                        else
+                            bottomNavigationView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     @Override
@@ -81,7 +99,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.about_menu_item:
                 navController.navigate(R.id.about);
                 break;
+            case R.id.logout_menu_item:
+                finish();
+                break;
+            case R.id.setting_menu_item:
+                navigateToSettings();
+                break;
         }
         return true;
+    }
+
+    private void navigateToSettings(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }
