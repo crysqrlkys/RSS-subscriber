@@ -36,7 +36,6 @@ public class About extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("Akali", "onActivityCreated: " + getView());
         versionTextView = getView().findViewById(R.id.version_textview);
         IMEITextView = getView().findViewById(R.id.imei_textview);
 
