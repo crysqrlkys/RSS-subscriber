@@ -60,6 +60,7 @@ public class ProfileFragment extends Fragment {
         avatar = view.findViewById(R.id.profile_avatar);
 
         profile = ViewModelProviders.of(this).get(ProfileViewModel.class);
+
         if(savedInstanceState == null) {
             profile.getAll()
                     .subscribe(profiles -> {
