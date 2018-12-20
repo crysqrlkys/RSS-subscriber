@@ -14,7 +14,7 @@ import com.example.whyko.labproject.R;
 
 public class Likes extends Fragment {
     public Likes() {
-        // Required empty public constructor
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

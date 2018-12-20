@@ -57,12 +57,9 @@ public class EditProfile extends Fragment {
         profileData.lastName = last_name.getText().toString();
         profileData.phoneNumber = phone.getText().toString();
         profileData.userEmail = email.getText().toString();
-        profile.update(profileData)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    navController.navigate(R.id.profile);
-                });
+        profile.update(profileData).subscribe(() -> {
+            navController.navigate(R.id.profile);
+        });
     }
 
     @Override
@@ -77,16 +74,13 @@ public class EditProfile extends Fragment {
         save_edit = view.findViewById(R.id.save_edit_btn);
         avatar = view.findViewById(R.id.edit_image_view);
         save_edit.setOnClickListener(v -> performSave());
-        final ImagePicker imagePicker = ImagePicker.create(this)
-                .single();
+        final ImagePicker imagePicker = ImagePicker.create(this).single();
         avatar.setOnClickListener(v -> imagePicker.start());
         profile = ViewModelProviders.of(this).get(ProfileViewModel.class);
         if(savedInstanceState == null){
-            profile.getAll().subscribe(profiles -> {
-                if(profiles.size() > 0){
-                    profileData = profiles.get(0);
-                    setProfileData(profileData);
-                }
+            profile.getLastLoggedIn().subscribe(profile -> {
+                profileData = profile;
+                setProfileData(profileData);
             });
         }
         else if(savedInstanceState.getSerializable("user_data") != null){

@@ -7,8 +7,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import whyko.labproject.view_models.ProfileViewModel;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity  {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private int currentFragmentId = R.id.profile;
+    private ProfileViewModel profileViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity  {
 
         Toolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
-
+        profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         navController = Navigation.findNavController(this,R.id.main_content);
         bottomNavigationView = findViewById(R.id.bottom_main_navigation);
         BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,7 +76,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         };
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         KeyboardVisibilityEvent.setEventListener(
                 this,
                 new KeyboardVisibilityEventListener() {
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity  {
                 navController.navigate(R.id.about);
                 break;
             case R.id.logout_menu_item:
-                finish();
+                logOut();
                 break;
             case R.id.setting_menu_item:
                 navigateToSettings();
@@ -115,5 +118,15 @@ public class MainActivity extends AppCompatActivity  {
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    private void logOut(){
+        profileViewModel.logOut().subscribe(()->navigateToAuth());
+    }
+
+    private void navigateToAuth(){
+        Intent intent = new Intent(this, AuthorizationActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

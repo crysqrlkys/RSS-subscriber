@@ -10,9 +10,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Profile.class}, version =1 )
+@Database(entities = {Profile.class, Helpers.class}, version = 1)
 public abstract class WhyDataBase extends RoomDatabase {
     public abstract ProfileDao profileDao();
+    public abstract HelpersDao helpersDao();
     private static volatile WhyDataBase INSTANCE;
 
     public static WhyDataBase getDatabase(final Context context) {
@@ -20,7 +21,7 @@ public abstract class WhyDataBase extends RoomDatabase {
             synchronized (WhyDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            WhyDataBase.class, "bbdatabase")
+                            WhyDataBase.class, "whydatabase")
                             .addCallback(new Callback() {
                                 @Override
                                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -28,6 +29,8 @@ public abstract class WhyDataBase extends RoomDatabase {
                                     Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                                         @Override
                                         public void run() {
+
+                                            getDatabase(context).helpersDao().insert(Helpers.getDefault());
                                             getDatabase(context).profileDao().insert(Profile.getDefault());
                                         }
                                     });
