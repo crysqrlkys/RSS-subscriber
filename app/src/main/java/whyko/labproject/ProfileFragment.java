@@ -60,15 +60,11 @@ public class ProfileFragment extends Fragment {
         avatar = view.findViewById(R.id.profile_avatar);
 
         profile = ViewModelProviders.of(this).get(ProfileViewModel.class);
-
         if(savedInstanceState == null) {
-            profile.getAll()
-                    .subscribe(profiles -> {
-                        if (profiles.size() > 0) {
-                            profileData = profiles.get(0);
-                            setProfileData(profileData);
-
-                        }
+            profile.getLastLoggedIn()
+                    .subscribe(profile -> {
+                        profileData = profile;
+                        setProfileData(profileData);
                     });
         }
         else if (savedInstanceState.getSerializable("user_data") != null){
