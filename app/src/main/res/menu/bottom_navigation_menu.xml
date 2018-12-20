@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/profile_item"
-        android:title="profile"
+        android:title="Profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/favorites_item"
-        android:title="favorite"
+        android:title="Favorite"
         android:icon="@drawable/ic_star_black_24dp"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/likes_item"
-        android:title="likes"
+        android:title="Likes"
         android:icon="@drawable/ic_thumb_up_black_24dp"
         app:showAsAction="ifRoom|withText"/>
     <item android:id="@+id/rss_item"
-        android:title="rss"
+        android:title="Rss"
         android:icon="@drawable/ic_rss_feed_black_24dp"
         app:showAsAction="ifRoom|withText"/>
 </menu>

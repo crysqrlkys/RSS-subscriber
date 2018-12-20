@@ -20,4 +20,14 @@
     <string name="email_hint">Email</string>
     <string name="edit_save">Edit</string>
     <string name="get_data_btn">Settings</string>
+    <string name="title_activity_authorization">AuthorizationActivity</string>
+    <string name="authorization">Authorization</string>
+    <string name="font_family_roboto_regular">Roboto regular</string>
+    <string name="about">about app</string>
+    <string name="auth_email">Enter email</string>
+    <string name="auth_password">Enter password</string>
+    <string name="login_btn">Login</string>
+    <string name="register_btn">Register</string>
+    <string name="loading_title">Загрузка</string>
+    <string name="loading_message">Подождите немного</string>
 </resources>
