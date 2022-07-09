@@ -1,2 +1,2 @@
 # AndroidApp
-Griffith did nothing wrong
+Rss feed subscriber
